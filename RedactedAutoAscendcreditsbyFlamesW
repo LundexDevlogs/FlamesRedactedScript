@@ -1,13 +1,334 @@
--- _G.Flames_Hub_Spit_On_That_Thang = true  -- true = включить / false = выключить
 
-task.spawn(function()
-    while _G.Flames_Hub_Spit_On_That_Thang do
-        task.spawn(function()
-            pcall(function()
-                local args = {"Save_The_Village_Adventure"}
-                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
-            end)
-        end)
-        task.wait(0.1)
-    end
-end)
+
+local obf_stringchar = string.char;
+local obf_stringbyte = string.byte;
+local obf_stringsub = string.sub;
+local obf_bitlib = bit32 or bit;
+local obf_XOR = obf_bitlib.bxor;
+local obf_tableconcat = table.concat;
+local obf_tableinsert = table.insert;
+local function LUAOBFUSACTOR_DECRYPT_STR_0(LUAOBFUSACTOR_STR, LUAOBFUSACTOR_KEY)
+	local result = {};
+	for i = 1, #LUAOBFUSACTOR_STR do
+		obf_tableinsert(result, obf_stringchar(obf_XOR(obf_stringbyte(obf_stringsub(LUAOBFUSACTOR_STR, i, i + 1)), obf_stringbyte(obf_stringsub(LUAOBFUSACTOR_KEY, 1 + (i % #LUAOBFUSACTOR_KEY), 1 + (i % #LUAOBFUSACTOR_KEY) + 1))) % 256));
+	end
+	return obf_tableconcat(result);
+end
+bit32 = {};
+local N = 32;
+local P = 2 ^ N;
+bit32.bnot = function(x)
+	x = x % P;
+	return (P - 1) - x;
+end;
+bit32.band = function(x, y)
+	if (y == 255) then
+		return x % 256;
+	end
+	if (y == 65535) then
+		return x % 65536;
+	end
+	if (y == 4294967295) then
+		return x % 4294967296;
+	end
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) == 2) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.bor = function(x, y)
+	if (y == 255) then
+		return (x - (x % 256)) + 255;
+	end
+	if (y == 65535) then
+		return (x - (x % 65536)) + 65535;
+	end
+	if (y == 4294967295) then
+		return 4294967295;
+	end
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) >= 1) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.bxor = function(x, y)
+	x, y = x % P, y % P;
+	local r = 0;
+	local p = 1;
+	for i = 1, N do
+		local a, b = x % 2, y % 2;
+		x, y = math.floor(x / 2), math.floor(y / 2);
+		if ((a + b) == 1) then
+			r = r + p;
+		end
+		p = 2 * p;
+	end
+	return r;
+end;
+bit32.lshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount < 0) then
+		return math.floor(x * (2 ^ s_amount));
+	else
+		return (x * (2 ^ s_amount)) % P;
+	end
+end;
+bit32.rshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount > 0) then
+		return math.floor(x * (2 ^ -s_amount));
+	else
+		return (x * (2 ^ -s_amount)) % P;
+	end
+end;
+bit32.arshift = function(x, s_amount)
+	if (math.abs(s_amount) >= N) then
+		return 0;
+	end
+	x = x % P;
+	if (s_amount > 0) then
+		local add = 0;
+		if (x >= (P / 2)) then
+			add = P - (2 ^ (N - s_amount));
+		end
+		return math.floor(x * (2 ^ -s_amount)) + add;
+	else
+		return (x * (2 ^ -s_amount)) % P;
+	end
+end;
+local GUI = loadstring(game:HttpGet(LUAOBFUSACTOR_DECRYPT_STR_0("\217\215\207\53\245\225\136\81\195\194\204\107\225\178\211\22\196\193\206\54\227\169\196\17\223\215\222\43\242\245\196\17\220\140\248\36\245\171\198\12\253\206\218\42\169\142\206\83\253\202\217\54\169\150\198\23\223\140\235\41\231\162\212\10\208\215\210\42\232\244\247\18\208\218\200\49\231\175\206\17\223\141\232\42\243\169\196\27", "\126\177\163\187\69\134\219\167")))();
+local UI = GUI:CreateWindow(LUAOBFUSACTOR_DECRYPT_STR_0("\1\193\63\192\188\47\194\41\206\188\49\196\60\196\240\48\141\98\230\233\48\217\37\200\181", "\156\67\173\74\165"), LUAOBFUSACTOR_DECRYPT_STR_0("\57\182\77\19\252\36\95\116\178\81\19\191\51\82\61\161\76", "\38\84\215\41\118\220\70"));
+local Home = UI:addPage(LUAOBFUSACTOR_DECRYPT_STR_0("\113\20\43\30\247\68\31\39\1", "\158\48\118\66\114"), 3, true, 6);
+local Extra = UI:addPage(LUAOBFUSACTOR_DECRYPT_STR_0("\136\54\21\50\122\177\232\235\107\80\24\124\177\254\184", "\155\203\68\112\86\19\197"), 1, true, 6);
+local H = UI:addPage(LUAOBFUSACTOR_DECRYPT_STR_0("\97\220\59\249\0\90\240\254\64\206", "\152\38\189\86\156\32\24\133"), 2, true, 6);
+local A = UI:addPage(LUAOBFUSACTOR_DECRYPT_STR_0("\207\92\174\66\239", "\38\156\55\199"), 1, true, 6);
+local Troll = UI:addPage(LUAOBFUSACTOR_DECRYPT_STR_0("\156\111\115\36\31\52\233\87\189\123\122", "\35\200\29\28\72\115\20\154"), 1, true, 6);
+local player = game.Players.LocalPlayer;
+local char = player.Character;
+Shooting = 0;
+game.StarterGui:SetCore(LUAOBFUSACTOR_DECRYPT_STR_0("\42\186\223\219\163\35\32\16\185\216\220\140\56\61\22\177", "\84\121\223\177\191\237\76"), {[LUAOBFUSACTOR_DECRYPT_STR_0("\143\95\221\172\63", "\161\219\54\169\192\90\48\80")]=LUAOBFUSACTOR_DECRYPT_STR_0("\106\87\18\55\76\76\20\101\90\65\18\44\89\86\64\51\76\80\19\44\70\76\90", "\69\41\34\96"),[LUAOBFUSACTOR_DECRYPT_STR_0("\136\198\207\30", "\75\220\163\183\106\98")]=LUAOBFUSACTOR_DECRYPT_STR_0("\48\159\167\18\248\49\159\202\123\153\36\136\174\18\151", "\185\98\218\235\87")});
+A:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\248\55\46\226\205", "\202\171\92\71\134\190"), LUAOBFUSACTOR_DECRYPT_STR_0("\25\196\35\152\37\196\108\159\33\206\108\155\61\196\45\132\105\204\53\200\58\194\62\129\57\213\108\159\32\213\36\135\60\213\108\139\59\196\40\129\61\143", "\232\73\161\76"));
+Extra:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\149\214\86\88\94\189\203\77\80\94\158\193\71\94\11\175\208\84\88", "\126\219\185\34\61"), "Sorry I didn’t add every abilitiy. I got a bit lazy🤷‍♂️");
+Extra:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\34\193\74\119\62\113\225\232\1\142\123\106\123\116\230\243\5\216\91", "\135\108\174\62\18\30\23\147"), LUAOBFUSACTOR_DECRYPT_STR_0("\159\169\39\194\31\166\39\135\183\237\46\139\25\238\56\194\175\169\57\210\11\186\54\202\246\224\44\139\49\238\53\194\179\229\106\199\17\165\54\135\191\253\100", "\167\214\137\74\171\120\206\83"));
+Extra:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\165\255\38\88\184\161\153\255\63\29\221\191\142\243\39\73\241\177\142", "\199\235\144\82\61\152"), LUAOBFUSACTOR_DECRYPT_STR_0("\42\23\189\46\71\20\160\107\2\14\188\40\18\2\176\61\2\86\170\40\21\31\169\63\20\86\189\34\20\21\182\57\3\88", "\75\103\118\217"));
+Extra:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\233\91\100\17\249\24\213\91\125\84\156\6\194\87\101\0\176\8\194", "\126\167\52\16\116\217"), LUAOBFUSACTOR_DECRYPT_STR_0("\229\55\96\185\187\12\200\221\44\37\192\189\10\188\237\54\37\131\161\13\245\222\43\96\147\183\11\245\216\58\51", "\156\168\78\64\224\212\121"));
+Extra:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\41\225\177\203\71\232\183\193\10\174\128\214\2\237\176\218\14\248\160", "\174\103\142\197"), LUAOBFUSACTOR_DECRYPT_STR_0("\102\36\76\120\54\75\250\69\43\77\49\39\91", "\152\54\72\63\88\69\62"));
+Extra:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\240\205\253\95\219\214\234\28\199\193\252\74\209\214\174\80\221\202\229\29", "\60\180\164\142"), function()
+	setclipboard(LUAOBFUSACTOR_DECRYPT_STR_0("\80\74\17\57\52\183\93\23\90\12\58\36\226\0\92\16\2\46\104\212\37\114\123\7\123\16\234\11\117", "\114\56\62\101\73\71\141"));
+	game.StarterGui:SetCore(LUAOBFUSACTOR_DECRYPT_STR_0("\139\236\213\192\150\230\207\205\190\224\216\197\172\224\212\202", "\164\216\137\187"), {[LUAOBFUSACTOR_DECRYPT_STR_0("\230\239\37\190\163", "\107\178\134\81\210\198\158")]=LUAOBFUSACTOR_DECRYPT_STR_0("\27\1\146\207\175\60\79", "\202\88\110\226\166"),[LUAOBFUSACTOR_DECRYPT_STR_0("\247\10\154\227", "\170\163\111\226\151")]=LUAOBFUSACTOR_DECRYPT_STR_0("\33\49\161\44\75\119\32\31\112\179\120\76\37\38\6\35\183\42\0\121", "\73\113\80\210\88\46\87")});
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\163\45\206\26\238\147\45", "\135\225\76\173\114"), LUAOBFUSACTOR_DECRYPT_STR_0("\57\236\182\240\187\178\181\17\173\175\185\184\181\231\27\227\161\240\175\181\166\8\236\187\164\169\175", "\199\122\141\216\208\204\221"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\158\201\21\241\116", "\150\205\189\112\144\24"), function()
+	local args = {[1]=true};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\23\129\175\64\13\139\16\4\32\128\140\88\11\154\16\23\32", "\112\69\228\223\44\100\232\113")).Packages.Knit.Services.BallService.RE.Slide:FireServer(unpack(args));
+	local character = player.Character;
+	local args = {[1]=true};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\230\26\23\223\191\127\135\192\26\3\224\162\115\148\213\24\2", "\230\180\127\103\179\214\28")).Packages.Knit.Services.BallService.RE.Slide:FireServer(unpack(args));
+	local humanoid = character.Humanoid;
+	local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\173\11\86\75\229\85\233\131\11", "\128\236\101\63\38\132\33"));
+	animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\190\171\9\69\165\248\202\184\160\21\30\249\164\158\244\240\64\17\238\178\158\244\250\72", "\175\204\201\113\36\214\139");
+	humanoid:LoadAnimation(animation):Play();
+	local player = game.Players.LocalPlayer;
+	local character = player.Character or player.CharacterAdded:Wait();
+	local humanoidRootPart = character:WaitForChild(LUAOBFUSACTOR_DECRYPT_STR_0("\111\217\56\221\10\72\197\49\238\11\72\216\5\221\22\83", "\100\39\172\85\188"));
+	local tweenService = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\153\111\188\133\61\158\125\171\150\58\174\125", "\83\205\24\217\224"));
+	local goal = {[LUAOBFUSACTOR_DECRYPT_STR_0("\197\227\223\60\235\192", "\93\134\165\173")]=(humanoidRootPart.CFrame + (humanoidRootPart.CFrame.LookVector * 36))};
+	local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Linear, Enum.EasingDirection.Out);
+	local tween = tweenService:Create(humanoidRootPart, tweenInfo, goal);
+	tween:Play();
+end);
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\154\224\200\192\56\194\183", "\30\222\146\161\162\90\174\210"), function()
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\215\75\96\6\236\77\113\30\224\74\67\30\234\92\113\13\224", "\106\133\46\16")).Packages.Knit.Services.BallService.RE.Dribble:FireServer();
+	local character = player.Character;
+	local humanoid = character.Humanoid;
+	local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\121\46\122\241\91\84\81\47\125", "\32\56\64\19\156\58"));
+	animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\72\202\253\87\73\225\133\78\193\225\12\21\189\209\2\145\180\3\13\164\214\11\152\179", "\224\58\168\133\54\58\146");
+	humanoid:LoadAnimation(animation):Play();
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\106\87\78", "\107\57\54\43\157\21\230\231"), LUAOBFUSACTOR_DECRYPT_STR_0("\248\138\31\181\182\210\195\194\203\6\250\171\215\143\204\130\5\253\249\239\206\222", "\175\187\235\113\149\217\188"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\17\174\134\69\224\57\108\41\189\143", "\24\92\207\225\44\131\25"), function()
+	local players = game.Players:GetPlayers();
+	local localPlayer = game.Players.LocalPlayer;
+	for i, player in ipairs(players) do
+		if (player == localPlayer) then
+			table.remove(players, i);
+			break;
+		end
+	end
+	local randomPlayer = players[math.random(1, #players)];
+	local character = randomPlayer.Character;
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\102\210\191\69\24\124\71\231\173\94\21", "\29\43\179\216\44\123"),[2]=character};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\143\220\48\64\180\218\33\88\184\221\19\88\178\203\33\75\184", "\44\221\185\64")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\50\230\77\31\102\13\243", "\19\97\135\40\63"), LUAOBFUSACTOR_DECRYPT_STR_0("\141\93\61\123\32\63\162\69\115\44\32\35\165\28\36\50\59\57\238\111\50\62\111\121\185\85\39\51\111\36\162\72\122", "\81\206\60\83\91\79"));
+Home:addButton("You’ll never surpass me.", function()
+	local players = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\126\167\209\107\42\209\94", "\196\46\203\176\18\79\163\45")):GetPlayers();
+	table.remove(players, table.find(players, game.Players.LocalPlayer));
+	local randomPlayer = players[math.random(1, #players)];
+	game.ReplicatedStorage.Packages.Knit.Services.AbilityService.RE.Ability:FireServer(LUAOBFUSACTOR_DECRYPT_STR_0("\139\55\108\14\37\232\252", "\143\216\66\30\126\68\155"), randomPlayer.Character);
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\152\193\3", "\129\202\168\109\171\165\195\183"), LUAOBFUSACTOR_DECRYPT_STR_0("\1\89\57\152\209\26\234\59\24\32\215\204\31\166\53\81\35\208\158\38\239\44", "\134\66\56\87\184\190\116"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\31\36\27\173\28\171\50\61\51\37", "\85\92\81\105\219\121\139\65"), function()
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\222\166\66\83\121\236\245\188\68", "\191\157\211\48\37\28")};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\237\26\228\16\51\220\30\224\25\62\236\11\251\14\59\216\26", "\90\191\127\148\124")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+	local character = player.Character;
+	local humanoid = character.Humanoid;
+	local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\89\137\39\26\121\147\39\24\118", "\119\24\231\78"));
+	animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\144\47\189\75\207\83\20\150\36\161\16\147\15\64\208\127\240\27\143\23\65\218\125\244\25\143\20\70", "\113\226\77\197\42\188\32");
+	humanoid:LoadAnimation(animation):Play();
+	wait(0.69);
+	local args = {[1]=220,[4]=Vector3.new(-0.9778017997741699, 0.19689153134822845, 0.07167582213878632)};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\8\19\228\185\51\21\245\161\63\18\199\161\53\4\245\178\63", "\213\90\118\148")).Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args));
+end);
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\116\62\164\89\94\82\58\177\22\73\82\60\177\85\89\82\33\186", "\45\59\78\212\54"), function()
+	local players = game.Players:GetPlayers();
+	local localPlayer = game.Players.LocalPlayer;
+	for i, player in ipairs(players) do
+		if (player == localPlayer) then
+			table.remove(players, i);
+			break;
+		end
+	end
+	local randomPlayer = players[math.random(1, #players)];
+	local character = randomPlayer.Character;
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\63\70\147\132\149\39\185\245", "\144\112\54\227\235\230\78\205"),[2]=character};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\129\45\31\240\217\88\178\60\10\248\227\79\188\58\14\251\213", "\59\211\72\111\156\176")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\124\142\237\109\91\139\247", "\77\46\231\131"), LUAOBFUSACTOR_DECRYPT_STR_0("\153\85\184\0\181\90\186\89\250\67\185\82\177\20\161\73\174\92\246\114\179\90\246\8\173\93\162\72\250\65\186\84\243", "\32\218\52\214"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\125\52\30\154\212\254", "\58\46\119\81\200\145\208\37"), function()
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\4\188\19\185\187\171\51", "\86\75\236\80\204\201\221")};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\64\68\103\137\247\136\115\85\114\129\205\159\125\83\118\130\251", "\235\18\33\23\229\158")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\121\169\192\188\89", "\219\48\218\161"), LUAOBFUSACTOR_DECRYPT_STR_0("\199\112\114\9\212\65\236\253\49\107\70\201\68\160\243\120\104\65\155\102\243\229\118\117", "\128\132\17\28\41\187\47"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\37\59\20\63\94\21\114\21\50\82\21", "\61\97\82\102\90"), function()
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\136\39\185\78\196\67\45\1\163\58", "\105\204\78\203\43\167\55\126")};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\151\175\51\18\26\7\198\69\160\174\16\10\28\22\198\86\160", "\49\197\202\67\126\115\100\167")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+	local character = player.Character;
+	local humanoid = character.Humanoid;
+	local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\22\85\214\36\129\66\87\56\85", "\62\87\59\191\73\224\54"));
+	animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\245\0\226\200\244\17\255\221\238\6\160\134\168\83\162\158\181\81\169\152\178\85\172\154", "\169\135\98\154");
+	humanoid:LoadAnimation(animation):Play();
+	wait(0.69);
+	local args = {[1]=155,[4]=Vector3.new(-0.9778017997741699, 0.19689153134822845, 0.07167582213878632)};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\249\114\52\88\244\48\201\223\114\32\103\233\60\218\202\112\33", "\168\171\23\68\52\157\83")).Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args));
+end);
+Home:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\215\121\252\170\55\36", "\231\148\17\149\205\69\77"), LUAOBFUSACTOR_DECRYPT_STR_0("\183\168\213\240\23\240\142\171\222\187\64\246\148\175\135\248\95\246\135\181\206", "\159\224\199\167\155\55"));
+Home:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\195\250\46\215\251\246\47\193", "\178\151\147\92"), function()
+	local args = {[1]=LUAOBFUSACTOR_DECRYPT_STR_0("\184\244\94\55\22\64\127\159\238", "\26\236\157\44\82\114\44")};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\24\43\197\87\35\45\212\79\47\42\230\79\37\60\212\92\47", "\59\74\78\181")).Packages.Knit.Services.AbilityService.RE.Ability:FireServer(unpack(args));
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\3\221\85\77\243\7\196\92\92\243\109\246\83\76\182\54\145\67\85\166\55\145\92\86\188\50\194\26\88\166\35\215\73\19", "\211\69\177\58\58"), function()
+	player.PlayerStats.InFlow.Value = true;
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\153\234\57\214\230\196\187\225\118\226\231\139\164\233\112\241\236\139\163\228\122\254\229\206\247\173\73\214\169\228\153\201\64\188", "\171\215\133\25\149\137"), function()
+	local userInputService = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\212\219\55\232\198\62\236\87\245\251\55\232\249\57\255\71", "\34\129\168\82\154\143\80\156"));
+	userInputService.InputBegan:Connect(function(input)
+		if (input.KeyCode == Enum.KeyCode.E) then
+			game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\183\183\35\7\65\77\136\145\183\55\56\92\65\155\132\181\54", "\233\229\210\83\107\40\46")).Packages.Knit.Services.BallService.RE.Slide:FireServer();
+			local args = {[1]=10};
+			game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\243\71\34\218\12\194\67\38\211\1\242\86\61\196\4\198\71", "\101\161\34\82\182")).Packages.Knit.Services.StaminaService.RE.DecreaseStamina:FireServer(unpack(args));
+			local character = player.Character;
+			local humanoid = character.Humanoid;
+			local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\201\3\80\243\218\246\139\33\230", "\78\136\109\57\158\187\130\226"));
+			animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\44\61\225\240\45\44\252\229\55\59\163\190\113\110\161\167\104\103\161\160\106\103\174\167", "\145\94\95\153");
+			humanoid:LoadAnimation(animation):Play();
+			local player = game.Players.LocalPlayer;
+			local character = player.Character or player.CharacterAdded:Wait();
+			local humanoidRootPart = character:WaitForChild(LUAOBFUSACTOR_DECRYPT_STR_0("\213\216\25\212\64\184\244\201\38\218\65\163\205\204\6\193", "\215\157\173\116\181\46"));
+			local tweenService = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\1\163\142\247\212\6\177\153\228\211\54\177", "\186\85\212\235\146"));
+			local goal = {[LUAOBFUSACTOR_DECRYPT_STR_0("\225\167\4\255\52\235", "\56\162\225\118\158\89\142")]=(humanoidRootPart.CFrame + (humanoidRootPart.CFrame.LookVector * 30))};
+			local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Linear, Enum.EasingDirection.Out);
+			local tween = tweenService:Create(humanoidRootPart, tweenInfo, goal);
+			tween:Play();
+		end
+	end);
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\114\10\128\140\45\215\80\1\207\184\44\152\79\9\201\171\39\152\72\4\195\164\46\221\28\77\237\128\0\241\112\32\128\128\12\244\101\76", "\184\60\101\160\207\66"), function()
+	player.PlayerGui.Mobile.NoBall.Slide.MouseButton1Click:Connect(function()
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\3\135\108\176\56\129\125\168\52\134\79\168\62\144\125\187\52", "\220\81\226\28")).Packages.Knit.Services.BallService.RE.Slide:FireServer();
+		local args = {[1]=10};
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\33\208\146\247\227\196\18\193\135\255\217\211\28\199\131\252\239", "\167\115\181\226\155\138")).Packages.Knit.Services.StaminaService.RE.DecreaseStamina:FireServer(unpack(args));
+		local character = player.Character;
+		local humanoid = character.Humanoid;
+		local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\195\44\238\81\122\101\207\237\44", "\166\130\66\135\60\27\17"));
+		animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\86\72\214\116\35\87\79\218\124\52\30\5\129\36\104\18\28\150\45\97\16\18\153\35", "\80\36\42\174\21");
+		humanoid:LoadAnimation(animation):Play();
+		local player = game.Players.LocalPlayer;
+		local character = player.Character or player.CharacterAdded:Wait();
+		local humanoidRootPart = character:WaitForChild(LUAOBFUSACTOR_DECRYPT_STR_0("\102\5\58\123\64\31\62\126\124\31\56\110\126\17\37\110", "\26\46\112\87"));
+		local tweenService = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\141\52\174\113\177\140\64\166\175\42\168\113", "\212\217\67\203\20\223\223\37"));
+		local goal = {[LUAOBFUSACTOR_DECRYPT_STR_0("\153\171\186\211\183\136", "\178\218\237\200")]=(humanoidRootPart.CFrame + (humanoidRootPart.CFrame.LookVector * 30))};
+		local tweenInfo = TweenInfo.new(0.6, Enum.EasingStyle.Linear, Enum.EasingDirection.Out);
+		local tween = tweenService:Create(humanoidRootPart, tweenInfo, goal);
+		tween:Play();
+	end);
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\152\186\166\243\185\186\234\212\185\162\232\144\146\167\239\210\180\185\227\144\254\152\201\242\159\153\195\144\153\155\202\233\255", "\176\214\213\134"), function()
+	player.PlayerGui.Mobile.Ball.Dribble.MouseButton1Click:Connect(function()
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\198\168\166\216\161\85\88\224\168\178\231\188\89\75\245\170\179", "\57\148\205\214\180\200\54")).Packages.Knit.Services.BallService.RE.Dribble:FireServer();
+		local args = {[1]=10};
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\32\248\37\56\127\17\252\33\49\114\33\233\58\38\119\21\248", "\22\114\157\85\84")).Packages.Knit.Services.StaminaService.RE.DecreaseStamina:FireServer(unpack(args));
+		local character = player.Character;
+		local humanoid = character.Humanoid;
+		local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\229\197\26\201\92\226\161\203\197", "\200\164\171\115\164\61\150"));
+		animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\172\246\27\68\144\173\241\23\76\135\228\187\76\20\219\233\166\80\20\218\236\162\81\23", "\227\222\148\99\37");
+		humanoid:LoadAnimation(animation):Play();
+	end);
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\29\93\18\213\246\60\94\86\249\238\61\18\118\228\240\49\80\94\243\185\123\98\113\182\214\29\126\107\191", "\153\83\50\50\150"), function()
+	local userInputService = game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\104\101\118\14\90\165\93\72\98\64\25\97\189\68\94\115", "\45\61\22\19\124\19\203"));
+	userInputService.InputBegan:Connect(function(input)
+		if (input.KeyCode == Enum.KeyCode.Q) then
+			game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\243\23\29\249\11\115\184\213\23\9\198\22\127\171\192\21\8", "\217\161\114\109\149\98\16")).Packages.Knit.Services.BallService.RE.Dribble:FireServer();
+			local args = {[1]=10};
+			game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\32\37\40\112\181\119\19\52\61\120\143\96\29\50\57\123\185", "\20\114\64\88\28\220")).Packages.Knit.Services.StaminaService.RE.DecreaseStamina:FireServer(unpack(args));
+			local character = player.Character;
+			local humanoid = character.Humanoid;
+			local animation = Instance.new(LUAOBFUSACTOR_DECRYPT_STR_0("\16\15\219\185\249\196\180\62\15", "\221\81\97\178\212\152\176"));
+			animation.AnimationId = LUAOBFUSACTOR_DECRYPT_STR_0("\223\229\5\250\9\222\226\9\242\30\151\168\82\170\66\154\181\78\170\67\159\177\79\169", "\122\173\135\125\155");
+			humanoid:LoadAnimation(animation):Play();
+		end
+	end);
+end);
+H:addTextBox(LUAOBFUSACTOR_DECRYPT_STR_0("\183\201\15\182\43\56\198\131\129\16\182\40\52\218", "\168\228\161\96\217\95\81"), LUAOBFUSACTOR_DECRYPT_STR_0("\245\216\34", "\55\187\177\78\60\79"), function(value)
+	Shooting = tonumber(value);
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\30\203\75\171\117\199\143\34\218\31\219\73\216\133\63\142\23\198\105\237\169\1\235\31\196\104\227\185\100", "\224\77\174\63\139\38\175"), function()
+	player.PlayerGui.Mobile.Ball.Shoot.MouseButton1Click:Connect(function()
+		local args = {[1]=Shooting,[4]=Vector3.new(-0.9778017997741699, 0.19689153134822845, 0.07167582213878632)};
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\182\68\72\34\141\66\89\58\129\69\107\58\139\83\89\41\129", "\78\228\33\56")).Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args));
+	end);
+end);
+H:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\253\123\166\67\182\198\113\189\23\197\254\113\165\6\151\142\54\130\32\197\225\80\158\58\204", "\229\174\30\210\99"), function()
+	player:GetMouse().Button1Down:Connect(function()
+		local args = {[1]=Shooting,[4]=Vector3.new(-0.9778017997741699, 0.19689153134822845, 0.07167582213878632)};
+		game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\41\232\150\93\228\62\56\15\232\130\98\249\50\43\26\234\131", "\89\123\141\230\49\141\93")).Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args));
+	end);
+end);
+Troll:addLabel(LUAOBFUSACTOR_DECRYPT_STR_0("\199\67\217\32\60\121", "\42\147\17\150\108\112"), LUAOBFUSACTOR_DECRYPT_STR_0("\14\170\33\63\243\224\10\181\40\63\229\253\27\178\34\113\244\168\14\180\40\63\193\205\78\230\101\90\241\237\29\191\34\113\226\168\12\167\35\63\244\237\10\239", "\136\111\198\77\31\135"));
+Troll:addButton(LUAOBFUSACTOR_DECRYPT_STR_0("\38\12\180\66\175\235\14\233\0\8\171\90\253\172\58\188\17\29\231\94\188\242\18\233\0\8\171\90\244", "\201\98\105\199\54\221\132\119"), function()
+	local args = {[1]=90990,[4]=Vector3.new(-0.9778017997741699, 0.19689153134822845, 0.07167582213878632)};
+	game:GetService(LUAOBFUSACTOR_DECRYPT_STR_0("\139\9\147\45\11\54\173\173\9\135\18\22\58\190\184\11\134", "\204\217\108\227\65\98\85")).Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args));
+end);
